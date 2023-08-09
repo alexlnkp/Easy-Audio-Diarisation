@@ -17,11 +17,7 @@ else
   echo "Virtual environment already exists. Skipping creation."
 fi
 
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    source "$VENV_FOLDER/bin/activate"
-else
-    source "$VENV_FOLDER/Scripts/activate"
-fi
+source "$VENV_FOLDER/bin/activate"
 
 python -m pip install --upgrade pip
 
