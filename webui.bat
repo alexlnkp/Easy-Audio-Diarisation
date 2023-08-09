@@ -16,16 +16,19 @@ IF NOT EXIST %VENV_FOLDER% (
 REM Activate the virtual environment
 call %VENV_FOLDER%\Scripts\activate.bat
 
-REM Install requirements if not already satisfied
-setlocal enabledelayedexpansion
+REM Upgrade pip
+python -m pip install --upgrade pip
+
+REM Create a temporary file to store installed packages
+pip list --format=freeze > installed_packages.txt
 
 for /f "usebackq delims=" %%A in ("%REQUIREMENTS_FILE%") do (
-    python -c "import pkg_resources; pkg = pkg_resources.get_distribution('%%~A'); exit(1)" >nul 2>nul
+    findstr /x /i /c:"%%~A" installed_packages.txt >nul
     if errorlevel 1 (
-        REM Requirement %%~A already satisfied
-    ) else (
         echo Installing requirement %%~A...
-        pip install %%~A
+        python -m pip install %%~A
+    ) else (
+        REM Requirement is already satisfied
     )
 )
 

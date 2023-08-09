@@ -74,10 +74,7 @@ def process_speaker_diarization(audio_file: str, TOKEN: str, rttm_file: str = RT
 
             segment_audio.export(speaker_segment_file, format="wav")
 
-            if speaker_id not in combined_audios:
-                combined_audios[speaker_id] = segment_audio
-            else:
-                combined_audios[speaker_id] += segment_audio
+            combined_audios[speaker_id] = segment_audio if speaker_id not in combined_audios else combined_audios[speaker_id] + segment_audio
 
             pbar.update(1)
 
@@ -93,9 +90,9 @@ def process_speaker_diarization(audio_file: str, TOKEN: str, rttm_file: str = RT
             combined_audio_file = os.path.join(combined_folder, f"speaker_{speaker_id}_combined.wav")
             combined_list.append(combined_audio_file)
 
+            save_combined_audio(combined_audio, combined_audio_file)
             yield combined_list
 
-            save_combined_audio(combined_audio, combined_audio_file)
             pbar.update(1)
 
     print("Combined audio export completed.")
