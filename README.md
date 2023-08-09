@@ -12,5 +12,5 @@ Used for separating speakers in the input audio file. Requires HF-API-Key.
 
 
 ## Usage
-Plug and play. Just install python (preferrably `3.10.11`) and run `webui.bat`.
+Plug and play. Just install python (preferrably [3.10.11](https://www.python.org/ftp/python/3.10.11/python-3.10.11-amd64.exe)) and run `webui.bat`.
 
