@@ -1,7 +1,5 @@
 #!/bin/bash
 
-apt-get update
-
 THEME="gradio/soft"
 
 while [[ $# -gt 0 ]]; do
@@ -27,6 +25,6 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-python gui.py $FLAGS
+python3 gui.py $FLAGS
 
 read -p "Press Enter to exit."
