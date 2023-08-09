@@ -36,28 +36,29 @@ done < "$REQUIREMENTS_FILE"
 
 # Parse command line options
 while [[ $# -gt 0 ]]; do
-    key="$1"
-    case $key in
+    case $1 in
         --iscolab)
-            IS_COLAB=true
-            shift
+            FLAGS+=" --iscolab"
             ;;
         --paperspace)
-            IS_PAPERSPACE=true
-            shift
+            FLAGS+=" --paperspace"
+            ;;
+        --not-autolaunch)
+            FLAGS+=" --not-autolaunch"
             ;;
         --theme)
-            THEME="$2"
-            shift 2
+            shift
+            FLAGS+=" --theme $1"
             ;;
         *)
-            echo "Unknown option: $key"
+            echo "Unknown option: $1"
+            exit 1
             ;;
     esac
+    shift
 done
 
-python gui.py --iscolab "$IS_COLAB" --paperspace "$IS_PAPERSPACE" --theme "$THEME"
+# Run gui.py with the parsed options
+python gui.py $FLAGS
 
 deactivate
-
-read -p "Press Enter to exit."
