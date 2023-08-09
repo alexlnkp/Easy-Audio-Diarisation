@@ -1,28 +1,32 @@
 #!/bin/bash
 
+apt-get update
+
+apt-get -y install python3-venv
+
 VENV_FOLDER="env"
 REQUIREMENTS_FILE="requirements.txt"
+IS_COLAB=false
+IS_PAPERSPACE=false
+THEME="gradio/soft"
 
-# Check if the virtual environment already exists
 if [ ! -d "$VENV_FOLDER" ]; then
   echo "Virtual environment not found. Creating..."
-  
-  # Create a Python virtual environment
   python3 -m venv "$VENV_FOLDER"
 else
   echo "Virtual environment already exists. Skipping creation."
 fi
 
-# Activate the virtual environment
-source "$VENV_FOLDER/Scripts/activate"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    source "$VENV_FOLDER/bin/activate"
+else
+    source "$VENV_FOLDER/Scripts/activate"
+fi
 
-# Upgrade pip
 python -m pip install --upgrade pip
 
-# Create a temporary file to store installed packages
 pip list --format=freeze > installed_packages.txt
 
-# Install missing requirements
 while IFS= read -r requirement || [ -n "$requirement" ]; do
   grep -x -i -q "$requirement" installed_packages.txt
   if [ $? -ne 0 ]; then
@@ -34,10 +38,30 @@ while IFS= read -r requirement || [ -n "$requirement" ]; do
   fi
 done < "$REQUIREMENTS_FILE"
 
-# Run gui.py
-python gui.py
+# Parse command line options
+while [[ $# -gt 0 ]]; do
+    key="$1"
+    case $key in
+        --iscolab)
+            IS_COLAB=true
+            shift
+            ;;
+        --paperspace)
+            IS_PAPERSPACE=true
+            shift
+            ;;
+        --theme)
+            THEME="$2"
+            shift 2
+            ;;
+        *)
+            echo "Unknown option: $key"
+            ;;
+    esac
+done
 
-# Deactivate the virtual environment
+python gui.py --iscolab "$IS_COLAB" --paperspace "$IS_PAPERSPACE" --theme "$THEME"
+
 deactivate
 
 read -p "Press Enter to exit."
