@@ -14,3 +14,8 @@ Used for separating speakers in the input audio file. Requires HF-API-Key.
 ## Usage
 Plug and play. Just install python (preferrably [3.10.11](https://www.python.org/ftp/python/3.10.11/python-3.10.11-amd64.exe)) and run `webui.bat`.
 
+## Credits
+
+- [l3afai](<https://discord.com/users/1100343780026101781>) original code from Google Colab
+
+- [alexlnkp (da me)](<discord.com/users/718415427994124351>) Gradio UI and code optim
